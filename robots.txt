@@ -1,0 +1,12 @@
+# Freshify — robots.txt
+# Replace https://www.freshify.example with your real domain once this site is live,
+# and update the Sitemap line + sitemap.xml to match.
+#
+# Legal pages use a <meta name="robots" content="noindex"> tag instead of being
+# blocked here, so crawlers can read that tag and drop them from search results
+# properly rather than just refusing to visit them.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.freshify.example/sitemap.xml

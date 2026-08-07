@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Freshify</title>
+<meta name="description" content="Review your order and check out.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#0d0a1e; --bg-panel:#100c24; --bg-footer:#080613; }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:#fff;
+    font-family:'Inter',sans-serif; font-weight:400; min-height:100vh;
+  }
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit;}
+  img{display:block; max-width:100%;}
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid #fff; outline-offset:3px; border-radius:inherit;
+  }
+
+  .top-nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px clamp(24px,5vw,60px);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .top-nav .logo{font-weight:600; letter-spacing:2.5px; text-transform:uppercase; font-size:15px;}
+  .top-nav .back{
+    font-size:13.5px; color:rgba(255,255,255,0.6);
+    display:flex; align-items:center; gap:6px;
+  }
+  .top-nav .back:hover{color:#fff;}
+
+  main{
+    max-width:1080px; margin:0 auto;
+    padding:56px 24px 100px;
+  }
+  main > h1{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:clamp(38px,5vw,58px); margin:0 0 40px; letter-spacing:1px;
+  }
+
+  .checkout-grid{
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px;
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .checkout-grid{grid-template-columns:1fr;}
+  }
+
+  .section-label{
+    font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    color:rgba(255,255,255,0.4); margin:0 0 16px;
+  }
+  .section-label:not(:first-child){ margin-top:36px; }
+
+  form#checkout-form{
+    background:var(--bg-panel); border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px; padding:32px;
+  }
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .field-row.single{grid-template-columns:1fr;}
+  @media (max-width:480px){ .field-row{grid-template-columns:1fr;} }
+
+  label{display:block; font-size:12px; color:rgba(255,255,255,0.5); margin:0 0 6px;}
+  input, textarea{
+    width:100%; padding:13px 16px; border-radius:12px; margin-bottom:14px;
+    background:rgba(255,255,255,0.045); border:1px solid rgba(255,255,255,0.12);
+    color:#fff; font-family:'Inter',sans-serif; font-size:14px;
+    transition:border-color .25s ease, background .25s ease;
+  }
+  input::placeholder, textarea::placeholder{color:rgba(255,255,255,0.3);}
+  input:focus, textarea:focus{
+    outline:none; border-color:rgba(255,255,255,0.4); background:rgba(255,255,255,0.075);
+  }
+  textarea{resize:vertical; min-height:80px;}
+
+  .payment-note{
+    background:rgba(255,255,255,0.035); border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px; padding:16px 18px; margin-bottom:8px;
+    font-size:13px; line-height:1.6; color:rgba(255,255,255,0.6);
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .payment-note svg{flex-shrink:0; margin-top:2px;}
+
+  .place-order-btn{
+    width:100%; margin-top:22px; padding:17px; border-radius:999px;
+    background:#fff; color:#100c24; font-size:14.5px; font-weight:600;
+    border:none; cursor:pointer;
+    transition:transform .3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity .25s ease;
+  }
+  .place-order-btn:hover:not(:disabled){transform:translateY(-2px);}
+  .place-order-btn:disabled{opacity:0.5; cursor:not-allowed;}
+
+  /* ---------- Order summary ---------- */
+  .summary-panel{
+    background:var(--bg-panel); border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px; padding:28px; position:sticky; top:24px;
+  }
+  .summary-panel h2{
+    font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:24px;
+    margin:0 0 20px; letter-spacing:0.5px;
+  }
+  .summary-item{
+    display:flex; gap:14px; padding:16px 0;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .summary-item img{
+    width:56px; height:56px; border-radius:12px; object-fit:cover; flex-shrink:0;
+    background:rgba(255,255,255,0.04);
+  }
+  .summary-item-info{flex:1; display:flex; flex-direction:column; gap:4px; min-width:0;}
+  .summary-item-top{display:flex; justify-content:space-between; gap:10px;}
+  .summary-item-name{font-size:14px; font-weight:600;}
+  .summary-item-line{font-size:12.5px; color:rgba(255,255,255,0.5);}
+
+  .summary-totals{margin-top:18px;}
+  .summary-row{
+    display:flex; justify-content:space-between; font-size:13.5px;
+    color:rgba(255,255,255,0.6); margin-bottom:10px;
+  }
+  .summary-row.total{
+    font-size:16px; color:#fff; font-weight:600;
+    padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);
+    margin-top:6px;
+  }
+  .summary-row.total b{font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:24px;}
+  .free-delivery-note{font-size:11.5px; color:rgba(255,255,255,0.4); margin-top:2px;}
+
+  /* ---------- Empty / confirmation states ---------- */
+  .empty-state, .confirm-state{
+    text-align:center; padding:80px 24px; max-width:480px; margin:0 auto;
+  }
+  .empty-state svg, .confirm-state svg{margin:0 auto 24px;}
+  .empty-state h2, .confirm-state h2{
+    font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:34px;
+    margin:0 0 14px; letter-spacing:0.5px;
+  }
+  .empty-state p, .confirm-state p{
+    color:rgba(255,255,255,0.55); font-size:14.5px; line-height:1.7; margin:0 0 28px;
+  }
+  .confirm-state .order-number{
+    font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px;
+    color:rgba(255,255,255,0.85); margin-bottom:28px;
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+    display:inline-block; padding:10px 22px; border-radius:999px;
+  }
+  .back-to-shop-btn{
+    display:inline-block; padding:15px 32px; border-radius:999px;
+    background:#fff; color:#100c24; font-size:13.5px; font-weight:600;
+    transition:transform .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .back-to-shop-btn:hover{transform:translateY(-2px);}
+
+  footer{
+    background:var(--bg-footer); padding:36px clamp(24px,5vw,60px);
+    border-top:1px solid rgba(255,255,255,0.06);
+    text-align:center; color:rgba(255,255,255,0.38); font-size:13px;
+  }
+  footer a{color:rgba(255,255,255,0.5); text-decoration:underline;}
+  footer a:hover{color:#fff;}
+
+  /* ---------- Toast (reused pattern) ---------- */
+  .toast-container{
+    position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+    z-index:300; display:flex; flex-direction:column-reverse; gap:10px; align-items:center;
+    pointer-events:none;
+  }
+  .toast{
+    background:rgba(20,16,40,0.96);
+    border:1px solid rgba(255,255,255,0.14);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    color:#fff; padding:14px 24px; border-radius:999px;
+    font-size:13.5px; font-weight:500;
+    box-shadow:0 14px 34px rgba(0,0,0,0.45);
+    opacity:0; transform:translateY(18px) scale(0.96);
+    transition:opacity .35s ease, transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display:flex; align-items:center; gap:10px; white-space:nowrap;
+  }
+  .toast.show{opacity:1; transform:translateY(0) scale(1);}
+  .toast .toast-dot{width:7px; height:7px; border-radius:50%; background:#4ADE80; flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="index.html" class="logo">Freshify</a>
+  <a href="index.html#shop" class="back">&larr; Back to shop</a>
+</div>
+
+<main id="main-content"></main>
+
+<footer>
+  &copy; 2026 Freshify. All rights reserved. &nbsp;·&nbsp;
+  <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html">Terms</a> &nbsp;·&nbsp;
+  <a href="shipping.html">Shipping</a>
+</footer>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+(function(){
+  // ================================================================
+  // Paste a Formspree (or similar) endpoint here to receive an email
+  // every time someone places a demo order. Optional — orders still
+  // "complete" client-side either way, since there's no real payment
+  // processor connected. See index.html's <script> for the matching
+  // contact/newsletter setup and for Stripe Payment Link config.
+  // ================================================================
+  var ORDER_FORM_ENDPOINT = 'https://formspree.io/f/YOUR_ORDER_FORM_ID';
+
+  var CART_STORAGE_KEY = 'freshify_cart_v1';
+  var FREE_DELIVERY_THRESHOLD = 40;
+  var DELIVERY_FEE = 4.99;
+  var TAX_RATE = 0.08;
+
+  function loadCart(){
+    try {
+      var raw = window.localStorage.getItem(CART_STORAGE_KEY);
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(function(i){
+        return i && typeof i.flavor === 'string' && typeof i.price === 'number' && typeof i.qty === 'number';
+      });
+    } catch (e){ return []; }
+  }
+  function saveCart(cart){
+    try { window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); }
+    catch (e){ /* localStorage unavailable */ }
+  }
+
+  var toastContainer = document.getElementById('toast-container');
+  function showToast(message){
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = '<span class="toast-dot"></span><span></span>';
+    toast.querySelector('span:last-child').textContent = message;
+    toastContainer.appendChild(toast);
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ toast.classList.add('show'); });
+    });
+    setTimeout(function(){
+      toast.classList.remove('show');
+      setTimeout(function(){ toast.remove(); }, 400);
+    }, 3200);
+  }
+
+  var main = document.getElementById('main-content');
+  var cart = loadCart();
+
+  function money(n){
+    return '$' + n.toFixed(2).replace(/\.00$/, '');
+  }
+
+  function renderEmpty(){
+    main.innerHTML =
+      '<div class="empty-state">' +
+        '<svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.6a2 2 0 0 0 2-1.6L22 8H6" stroke="rgba(255,255,255,0.5)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="21" r="1.4" fill="rgba(255,255,255,0.5)"/><circle cx="18" cy="21" r="1.4" fill="rgba(255,255,255,0.5)"/></svg>' +
+        '<h2>Your cart is empty</h2>' +
+        '<p>Add a bowl or two from the shop before checking out.</p>' +
+        '<a href="index.html#shop" class="back-to-shop-btn">Browse the shop</a>' +
+      '</div>';
+  }
+
+  function renderConfirmation(orderNumber, customerName){
+    main.innerHTML =
+      '<div class="confirm-state">' +
+        '<svg width="52" height="52" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#4ADE80" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#4ADE80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '<h2>Thanks' + (customerName ? ', ' + escapeHtml(customerName.split(' ')[0]) : '') + '!</h2>' +
+        '<div class="order-number">Order #' + orderNumber + '</div>' +
+        '<p>This is a demo checkout, so no payment was actually charged. Once you connect a payment provider (see the config notes in index.html), real orders will process here.</p>' +
+        '<a href="index.html" class="back-to-shop-btn">Back to home</a>' +
+      '</div>';
+  }
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderCheckout(){
+    var subtotal = cart.reduce(function(sum, i){ return sum + i.price * i.qty; }, 0);
+    var delivery = subtotal >= FREE_DELIVERY_THRESHOLD || subtotal === 0 ? 0 : DELIVERY_FEE;
+    var tax = subtotal * TAX_RATE;
+    var total = subtotal + delivery + tax;
+
+    var itemsHtml = cart.map(function(item){
+      return '<div class="summary-item">' +
+        '<img src="' + item.image + '" alt="' + escapeHtml(item.flavor) + '">' +
+        '<div class="summary-item-info">' +
+          '<div class="summary-item-top">' +
+            '<span class="summary-item-name">' + escapeHtml(item.flavor) + '</span>' +
+            '<span class="summary-item-name">' + money(item.price * item.qty) + '</span>' +
+          '</div>' +
+          '<span class="summary-item-line">Qty ' + item.qty + ' &times; ' + money(item.price) + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    main.innerHTML =
+      '<h1>Checkout</h1>' +
+      '<div class="checkout-grid">' +
+        '<form id="checkout-form">' +
+          '<p class="section-label">Contact</p>' +
+          '<label for="co-name" class="sr-only">Full name</label>' +
+          '<input type="text" id="co-name" name="name" placeholder="Full name" required>' +
+          '<div class="field-row">' +
+            '<div>' +
+              '<label for="co-email" class="sr-only">Email</label>' +
+              '<input type="email" id="co-email" name="email" placeholder="Email" required>' +
+            '</div>' +
+            '<div>' +
+              '<label for="co-phone" class="sr-only">Phone</label>' +
+              '<input type="tel" id="co-phone" name="phone" placeholder="Phone" required>' +
+            '</div>' +
+          '</div>' +
+
+          '<p class="section-label">Delivery address</p>' +
+          '<label for="co-address" class="sr-only">Street address</label>' +
+          '<input type="text" id="co-address" name="address" placeholder="Street address" required>' +
+          '<div class="field-row">' +
+            '<div>' +
+              '<label for="co-city" class="sr-only">City</label>' +
+              '<input type="text" id="co-city" name="city" placeholder="City" required>' +
+            '</div>' +
+            '<div>' +
+              '<label for="co-zip" class="sr-only">ZIP / postal code</label>' +
+              '<input type="text" id="co-zip" name="zip" placeholder="ZIP / postal code" required>' +
+            '</div>' +
+          '</div>' +
+          '<label for="co-notes" class="sr-only">Delivery notes</label>' +
+          '<textarea id="co-notes" name="notes" placeholder="Delivery notes (optional) — gate code, leave at door, etc."></textarea>' +
+
+          '<p class="section-label">Payment</p>' +
+          '<div class="payment-note">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><path d="M3 9h18" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/></svg>' +
+            '<span>No payment provider is connected yet, so no card details are collected here. Clicking "Place Order" completes a demo order — connect Stripe (see index.html) to accept real payments.</span>' +
+          '</div>' +
+
+          '<button type="submit" class="place-order-btn" id="place-order-btn">Place Order — ' + money(total) + '</button>' +
+        '</form>' +
+
+        '<div class="summary-panel">' +
+          '<h2>Order Summary</h2>' +
+          itemsHtml +
+          '<div class="summary-totals">' +
+            '<div class="summary-row"><span>Subtotal</span><span>' + money(subtotal) + '</span></div>' +
+            '<div class="summary-row"><span>Delivery</span><span>' + (delivery === 0 ? 'Free' : money(delivery)) + '</span></div>' +
+            '<div class="summary-row"><span>Estimated tax</span><span>' + money(tax) + '</span></div>' +
+            '<div class="summary-row total"><span>Total</span><b>' + money(total) + '</b></div>' +
+            (subtotal > 0 && subtotal < FREE_DELIVERY_THRESHOLD ?
+              '<div class="free-delivery-note">Add ' + money(FREE_DELIVERY_THRESHOLD - subtotal) + ' more for free delivery.</div>' : '') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    var form = document.getElementById('checkout-form');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var btn = document.getElementById('place-order-btn');
+      btn.disabled = true;
+      btn.textContent = 'Placing order…';
+
+      var orderNumber = Math.floor(100000 + Math.random() * 900000);
+      var customerName = document.getElementById('co-name').value;
+
+      function finish(){
+        saveCart([]);
+        renderConfirmation(orderNumber, customerName);
+      }
+
+      if (ORDER_FORM_ENDPOINT.indexOf('YOUR_ORDER_FORM_ID') !== -1){
+        console.warn('Freshify: order notifications are not connected yet. ' +
+          'See the ORDER_FORM_ENDPOINT comment near the top of checkout.html.');
+        setTimeout(finish, 500);
+        return;
+      }
+
+      var formData = new FormData(form);
+      formData.append('order_number', orderNumber);
+      formData.append('items', JSON.stringify(cart));
+      formData.append('total', money(total));
+
+      fetch(ORDER_FORM_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).catch(function(){ /* still complete the demo order below */ })
+        .then(finish);
+    });
+  }
+
+  if (cart.length === 0){
+    renderEmpty();
+  } else {
+    renderCheckout();
+  }
+})();
+</script>
+</body>
+</html>

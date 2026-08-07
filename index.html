@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freshify — Real Fruit Smoothie Bowls</title>
+<meta name="description" content="Handcrafted smoothie bowls made from real, whole fruit. No fillers, no shortcuts — just Blueberry, Strawberry, Chocolate and Blackberry bowls made fresh to order.">
+<meta name="theme-color" content="#0d0a1e">
+<link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32.png">
+<link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Freshify — Real Fruit Smoothie Bowls">
+<meta property="og:description" content="Handcrafted smoothie bowls made from real, whole fruit. No fillers, no shortcuts — just pure smoothie goodness in every spoonful.">
+<meta property="og:image" content="Images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<!--
+  ANALYTICS (optional) — privacy-friendly, cookie-free options that don't
+  need a cookie consent banner in most jurisdictions:
+
+  Plausible (https://plausible.io), ~$9/mo, no free tier but very simple:
+  <script defer data-domain="www.freshify.example" src="https://plausible.io/js/script.js"></script>
+
+  Fathom (https://usefathom.com), similar pricing/simplicity:
+  <script src="https://cdn.usefathom.com/script.js" data-site="YOUR_SITE_ID" defer></script>
+
+  Sign up, grab your snippet, and uncomment/paste the matching line above.
+  Google Analytics also works here but is heavier and typically needs a
+  cookie-consent banner depending on your visitors' region.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="Images/Blueberry-bowl.webp" fetchpriority="high">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"item":{"@type":"Product","name":"Berry Pure","description":"Fresh blueberries blended with almond milk, topped with chia seeds and toasted coconut flakes.","image":"Images/Blueberry-bowl.webp","offers":{"@type":"Offer","price":"14.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}},
+    {"@type":"ListItem","position":2,"item":{"@type":"Product","name":"Pink Bliss","description":"Sun-ripened strawberries with banana, shredded coconut and a drizzle of raw honey.","image":"Images/Strawberry-bowl.webp","offers":{"@type":"Offer","price":"15.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}},
+    {"@type":"ListItem","position":3,"item":{"@type":"Product","name":"Cocoa Crush","description":"Rich cacao smoothie base topped with sliced banana, roasted almonds and coconut flakes.","image":"Images/Chocolate-bowl.webp","offers":{"@type":"Offer","price":"13.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}},
+    {"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Dark Berry","description":"Wild blackberries with coconut cream, pine nuts, chia seeds and toasted almond slivers.","image":"Images/Blackberry-bowl.webp","offers":{"@type":"Offer","price":"16.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}}
+  ]
+}
+</script>
+<style>
+  :root{
+    --bg:#0d0a1e;
+    --bg-shop:#100c24;
+    --bg-footer:#080613;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:#fff;
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+  img,svg{display:block;max-width:100%;}
+  ::selection{background:rgba(255,255,255,0.2);}
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid #fff; outline-offset:3px; border-radius:inherit;
+  }
+  .pill-nav a:focus-visible, .mobile-menu a:focus-visible{ outline-offset:-2px; }
+
+  /* ---------- Fixed gradient background layers ---------- */
+  #bg-a,#bg-b{
+    position:fixed; inset:0; z-index:0;
+    transition:opacity .85s ease;
+    background-color:var(--bg);
+  }
+  #bg-a{opacity:1;}
+  #bg-b{opacity:0;}
+  #bg-a::after,#bg-b::after{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05), transparent 60%);
+  }
+
+  /* ---------- Nav (single <nav> element in the document) ---------- */
+  nav.site-nav{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px clamp(24px,5vw,60px);
+  }
+  .logo{
+    font-weight:600; letter-spacing:2.5px; text-transform:uppercase;
+    font-size:15px;
+  }
+  .pill-nav{
+    display:flex; align-items:center; gap:2px;
+    background:rgba(255,255,255,0.07);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:999px; padding:6px;
+  }
+  .pill-nav a{
+    padding:10px 22px; border-radius:999px;
+    font-size:13.5px; font-weight:500; color:rgba(255,255,255,0.72);
+    transition:background .3s ease, color .3s ease;
+    white-space:nowrap;
+  }
+  .pill-nav a.active{background:#fff; color:#0d0a1e;}
+  .user-btn{
+    width:42px; height:42px; border-radius:50%;
+    background:rgba(255,255,255,0.07);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.12);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    position:relative;
+    padding:0; font:inherit; -webkit-appearance:none; appearance:none;
+  }
+  .cart-badge{
+    position:absolute; top:-3px; right:-3px;
+    min-width:17px; height:17px; padding:0 4px; border-radius:50%;
+    background:#F2413F; color:#fff;
+    font-size:10px; font-weight:600; font-family:'Inter',sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    transform:scale(0);
+    transition:transform .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .cart-badge.show{transform:scale(1);}
+
+  /* ---------- Hamburger + mobile menu ---------- */
+  .hamburger-btn{
+    display:none;
+    width:42px; height:42px; border-radius:50%;
+    background:rgba(255,255,255,0.07);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.12);
+    align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .hamburger-btn .bars{position:relative; width:16px; height:12px;}
+  .hamburger-btn .bars span{
+    position:absolute; left:0; width:100%; height:1.4px; background:#fff;
+    transition:transform .3s ease, opacity .3s ease, top .3s ease;
+  }
+  .hamburger-btn .bars span:nth-child(1){top:0;}
+  .hamburger-btn .bars span:nth-child(2){top:5px;}
+  .hamburger-btn .bars span:nth-child(3){top:10px;}
+  .hamburger-btn.open .bars span:nth-child(1){top:5px; transform:rotate(45deg);}
+  .hamburger-btn.open .bars span:nth-child(2){opacity:0;}
+  .hamburger-btn.open .bars span:nth-child(3){top:5px; transform:rotate(-45deg);}
+
+  .mobile-menu{
+    position:fixed; inset:0 0 auto 0; z-index:190;
+    background:rgba(10,8,24,0.98);
+    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    padding:104px 32px 40px;
+    display:flex; flex-direction:column;
+    transform:translateY(-100%);
+    transition:transform .45s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height:100vh; overflow-y:auto;
+  }
+  .mobile-menu.open{transform:translateY(0);}
+  .mobile-menu a{
+    padding:18px 2px; font-size:22px; font-weight:500;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    color:rgba(255,255,255,0.8);
+    transition:color .25s ease;
+  }
+  .mobile-menu a.active{color:#fff;}
+
+  @media (max-width:640px){
+    .pill-nav{display:none;}
+    .hamburger-btn{display:flex;}
+  }
+
+  /* ---------- Toast notifications ---------- */
+  .toast-container{
+    position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+    z-index:300; display:flex; flex-direction:column-reverse; gap:10px; align-items:center;
+    pointer-events:none;
+  }
+  .toast{
+    background:rgba(20,16,40,0.96);
+    border:1px solid rgba(255,255,255,0.14);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    color:#fff; padding:14px 24px; border-radius:999px;
+    font-size:13.5px; font-weight:500;
+    box-shadow:0 14px 34px rgba(0,0,0,0.45);
+    opacity:0; transform:translateY(18px) scale(0.96);
+    transition:opacity .35s ease, transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display:flex; align-items:center; gap:10px;
+    white-space:nowrap;
+  }
+  .toast.show{opacity:1; transform:translateY(0) scale(1);}
+  .toast .toast-dot{width:7px; height:7px; border-radius:50%; background:#4ADE80; flex-shrink:0;}
+
+  /* ---------- Cart drawer ---------- */
+  .cart-backdrop{
+    position:fixed; inset:0; z-index:240;
+    background:rgba(0,0,0,0.55);
+    opacity:0; pointer-events:none;
+    transition:opacity .35s ease;
+  }
+  .cart-backdrop.open{opacity:1; pointer-events:auto;}
+
+  .cart-drawer{
+    position:fixed; top:0; right:0; bottom:0; z-index:250;
+    width:min(400px, 92vw);
+    background:#100c24;
+    border-left:1px solid rgba(255,255,255,0.08);
+    display:flex; flex-direction:column;
+    transform:translateX(100%);
+    transition:transform .45s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow:-24px 0 60px rgba(0,0,0,0.5);
+  }
+  .cart-drawer.open{transform:translateX(0);}
+
+  .cart-header{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:26px 26px 20px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    flex-shrink:0;
+  }
+  .cart-header h3{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:26px; margin:0; letter-spacing:1px;
+  }
+  .cart-close-btn{
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    flex-shrink:0;
+  }
+
+  .cart-items{flex:1; overflow-y:auto; padding:6px 26px;}
+  .cart-empty{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    height:100%; min-height:280px; text-align:center; color:rgba(255,255,255,0.4); gap:14px;
+  }
+  .cart-empty svg{opacity:0.5;}
+  .cart-empty p{margin:0; font-size:14px;}
+
+  .cart-item{
+    display:flex; gap:14px; padding:20px 0;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .cart-item img{
+    width:64px; height:64px; border-radius:14px; object-fit:cover; flex-shrink:0;
+    background:rgba(255,255,255,0.04);
+  }
+  .cart-item-info{flex:1; display:flex; flex-direction:column; gap:7px; min-width:0;}
+  .cart-item-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .cart-item-name{font-size:14.5px; font-weight:600;}
+  .cart-item-price{font-size:12.5px; color:rgba(255,255,255,0.5);}
+  .cart-item-remove{
+    color:rgba(255,255,255,0.35); font-size:12px; cursor:pointer;
+    background:none; border:none; padding:0; text-decoration:underline;
+    font-family:inherit; flex-shrink:0;
+  }
+  .cart-item-remove:hover{color:#fff;}
+  .qty-stepper{display:flex; align-items:center; gap:12px; margin-top:2px;}
+  .qty-stepper button{
+    width:24px; height:24px; border-radius:50%;
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14);
+    color:#fff; font-size:14px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; line-height:1; padding:0;
+  }
+  .qty-stepper button:hover{background:rgba(255,255,255,0.15);}
+  .qty-stepper span{font-size:13px; min-width:16px; text-align:center;}
+
+  .cart-footer{
+    padding:22px 26px 28px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    flex-shrink:0;
+  }
+  .cart-subtotal{display:flex; justify-content:space-between; align-items:baseline; font-size:14.5px; margin-bottom:16px; color:rgba(255,255,255,0.7);}
+  .cart-subtotal b{font-family:'Bebas Neue',sans-serif; font-size:24px; font-weight:400; color:#fff;}
+  .cart-checkout-btn{
+    width:100%; padding:16px; border-radius:999px;
+    background:#fff; color:#100c24; font-size:14px; font-weight:600;
+    border:none; cursor:pointer;
+    transition:transform .3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity .25s ease;
+  }
+  .cart-checkout-btn:hover:not(:disabled){transform:translateY(-2px);}
+  .cart-checkout-btn:disabled{opacity:0.35; cursor:not-allowed;}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative; height:100vh; overflow:hidden; z-index:1;}
+  .slider{position:relative; width:100%; height:100%;}
+  .slide{
+    position:absolute; inset:0;
+    pointer-events:none;
+  }
+  .slide.active{pointer-events:auto; z-index:3;}
+
+  .anim{
+    opacity:0;
+    transition:transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.55s ease;
+  }
+  .ingredient.anim{
+    transition:transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease;
+  }
+
+  .title-wrap{
+    position:absolute; top:48%; left:0; width:100%;
+    transform:translateY(-50%);
+    text-align:center; pointer-events:none;
+  }
+  .title-anim{
+    display:inline-block;
+    margin:0;
+    font-family:'Bebas Neue',sans-serif;
+    font-weight:400;
+    font-size:clamp(100px, 15.5vw, 230px);
+    line-height:0.9;
+    letter-spacing:2px;
+    color:#fff;
+  }
+
+  .bowl-wrap{
+    position:absolute; top:46%; left:50%;
+    width:clamp(280px, 37vw, 550px);
+    transform:translate(-50%,-50%);
+    pointer-events:none; z-index:2;
+  }
+  .bowl-wrap::before{
+    content:'';
+    position:absolute; inset:-18%;
+    background:radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.18) 45%, transparent 72%);
+    z-index:-1;
+  }
+  .bowl-anim{
+    width:100%;
+    display:block;
+    filter:drop-shadow(0 35px 55px rgba(0,0,0,0.5));
+    transform-origin:50% 50%;
+  }
+
+  .ingredient{position:absolute; pointer-events:none; z-index:4;}
+  .ingredient img{width:100%; display:block; filter:drop-shadow(0 12px 18px rgba(0,0,0,0.4));}
+  .ing-1{ width:clamp(90px, 10vw, 148px); top:11%; left:7%;  transform:rotate(-20deg); }
+  .ing-2{ width:clamp(80px, 9vw, 130px);  top:8%;  right:8%; transform:rotate(15deg);  }
+  .ing-3{ width:clamp(65px, 7vw, 105px);  bottom:20%; right:22%; transform:rotate(-12deg); }
+
+  .content-wrap{
+    position:absolute; bottom:62px; left:60px;
+    max-width:420px; pointer-events:none; z-index:5;
+  }
+  .content-anim{display:block;}
+  .slide-name{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:clamp(26px,3vw,34px); letter-spacing:1px; margin:0 0 8px;
+  }
+  .slide-desc{
+    font-size:14.5px; line-height:1.6; color:rgba(255,255,255,0.65);
+    margin:0; max-width:360px;
+  }
+
+  .slide-nav{
+    position:absolute; bottom:58px; right:58px; z-index:50;
+    display:flex; align-items:center; gap:18px;
+  }
+  .slide-counter{
+    font-size:13px; letter-spacing:1.5px; color:rgba(255,255,255,0.55);
+    font-variant-numeric:tabular-nums;
+  }
+  .arrow-btns{display:flex; gap:12px;}
+  .arrow-btn{
+    width:52px; height:52px; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.28);
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; cursor:pointer;
+    transition:background .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .arrow-btn:hover{background:rgba(255,255,255,0.16); border-color:rgba(255,255,255,0.5); transform:scale(1.06);}
+  .arrow-btn:active{transform:scale(0.96);}
+
+  .scroll-hint{
+    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+    z-index:50;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:rgba(255,255,255,0.45);
+    font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
+  }
+  .scroll-hint .chevron{
+    width:14px; height:14px;
+    border-right:1.5px solid rgba(255,255,255,0.5);
+    border-bottom:1.5px solid rgba(255,255,255,0.5);
+    transform:rotate(45deg);
+    animation:hint-bounce 1.8s ease-in-out infinite;
+  }
+  @keyframes hint-bounce{
+    0%,100%{transform:rotate(45deg) translate(0,0);}
+    50%{transform:rotate(45deg) translate(4px,4px);}
+  }
+
+  /* ---------- Slide animation states ---------- */
+  .slide.active .title-anim   { opacity: 1; transform: translateX(0); }
+  .slide.active .bowl-anim    { opacity: 1; transform: translateX(0) rotate(0deg); }
+  .slide.active .content-anim { opacity: 1; transform: translateX(0); }
+  .slide.active .ing-1 { opacity: 1; transform: rotate(-20deg) translateY(0); }
+  .slide.active .ing-2 { opacity: 1; transform: rotate(15deg)  translateY(0); }
+  .slide.active .ing-3 { opacity: 1; transform: rotate(-12deg) translateY(0); }
+  .slide.active .title-anim   { transition-delay: 0s; }
+  .slide.active .content-anim { transition-delay: 0.04s; }
+  .slide.active .bowl-anim    { transition-delay: 0.07s; }
+  .slide.active .ing-1        { transition-delay: 0.3s; }
+  .slide.active .ing-2        { transition-delay: 0.38s; }
+  .slide.active .ing-3        { transition-delay: 0.46s; }
+
+  .slide.enter-right .title-anim   { opacity: 0; transform: translateX(65vw); }
+  .slide.enter-right .bowl-anim    { opacity: 0; transform: translateX(72vw) rotate(35deg); }
+  .slide.enter-right .content-anim { opacity: 0; transform: translateX(55vw); }
+  .slide.enter-right .ing-1 { opacity: 0; transform: rotate(-20deg) translateY(-90vh); }
+  .slide.enter-right .ing-2 { opacity: 0; transform: rotate(15deg)  translateY(-90vh); }
+  .slide.enter-right .ing-3 { opacity: 0; transform: rotate(-12deg) translateY(-90vh); }
+
+  .slide.enter-left .title-anim   { opacity: 0; transform: translateX(-65vw); }
+  .slide.enter-left .bowl-anim    { opacity: 0; transform: translateX(-72vw) rotate(-35deg); }
+  .slide.enter-left .content-anim { opacity: 0; transform: translateX(-55vw); }
+  .slide.enter-left .ing-1 { opacity: 0; transform: rotate(-20deg) translateY(-90vh); }
+  .slide.enter-left .ing-2 { opacity: 0; transform: rotate(15deg)  translateY(-90vh); }
+  .slide.enter-left .ing-3 { opacity: 0; transform: rotate(-12deg) translateY(-90vh); }
+
+  .slide.exit-left .title-anim,
+  .slide.exit-left .bowl-anim,
+  .slide.exit-left .content-anim {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in;
+  }
+  .slide.exit-left .ingredient.anim {
+    transition: transform 0.42s cubic-bezier(0.4, 0, 1, 1), opacity 0.32s ease-in;
+  }
+  .slide.exit-left .title-anim   { opacity: 0; transform: translateX(-55vw); }
+  .slide.exit-left .bowl-anim    { opacity: 0; transform: translateX(-60vw) rotate(-30deg); }
+  .slide.exit-left .content-anim { opacity: 0; transform: translateX(-45vw); }
+  .slide.exit-left .ing-1 { opacity: 0; transform: rotate(-20deg) translateY(-110vh); }
+  .slide.exit-left .ing-2 { opacity: 0; transform: rotate(15deg)  translateY(-110vh); }
+  .slide.exit-left .ing-3 { opacity: 0; transform: rotate(-12deg) translateY(-110vh); }
+
+  .slide.exit-right .title-anim,
+  .slide.exit-right .bowl-anim,
+  .slide.exit-right .content-anim {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in;
+  }
+  .slide.exit-right .ingredient.anim {
+    transition: transform 0.42s cubic-bezier(0.4, 0, 1, 1), opacity 0.32s ease-in;
+  }
+  .slide.exit-right .title-anim   { opacity: 0; transform: translateX(55vw); }
+  .slide.exit-right .bowl-anim    { opacity: 0; transform: translateX(60vw) rotate(30deg); }
+  .slide.exit-right .content-anim { opacity: 0; transform: translateX(45vw); }
+  .slide.exit-right .ing-1 { opacity: 0; transform: rotate(-20deg) translateY(-110vh); }
+  .slide.exit-right .ing-2 { opacity: 0; transform: rotate(15deg)  translateY(-110vh); }
+  .slide.exit-right .ing-3 { opacity: 0; transform: rotate(-12deg) translateY(-110vh); }
+
+  /* ---------- About ---------- */
+  .about{
+    position:relative; z-index:2; background:var(--bg);
+    padding:130px 24px; text-align:center;
+  }
+  .pill-label{
+    display:inline-flex; align-items:center; gap:9px;
+    padding:9px 20px; border-radius:999px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.1);
+    font-size:11.5px; letter-spacing:2.5px; text-transform:uppercase;
+    color:rgba(255,255,255,0.75); margin-bottom:30px;
+  }
+  .pill-label .dot{width:6px; height:6px; border-radius:50%; background:#F2413F;}
+  .about h2{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:clamp(48px, 8vw, 108px);
+    line-height:0.95; letter-spacing:1px; margin:0 0 30px;
+  }
+  .about p.sub{
+    max-width:560px; margin:0 auto 64px;
+    color:rgba(255,255,255,0.58); font-size:17px; line-height:1.7;
+  }
+  .stats{
+    max-width:680px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(3,1fr);
+    border-top:1px solid rgba(255,255,255,0.12);
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    padding:42px 0;
+  }
+  .stats .stat{position:relative; padding:0 16px;}
+  .stats .stat:not(:last-child)::after{
+    content:''; position:absolute; right:0; top:8%; bottom:8%;
+    width:1px; background:rgba(255,255,255,0.12);
+  }
+  .stats .num{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:clamp(36px,5vw,56px); display:block;
+  }
+  .stats .stat-label{
+    font-size:10.5px; letter-spacing:2.5px; text-transform:uppercase;
+    color:rgba(255,255,255,0.48); margin-top:8px; display:block;
+  }
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.visible{opacity:1; transform:translateY(0);}
+  .reveal-d1{transition-delay:.1s;}
+  .reveal-d2{transition-delay:.2s;}
+  .reveal-d3{transition-delay:.3s;}
+  .reveal-d4{transition-delay:.4s;}
+
+  /* ---------- Testimonials ---------- */
+  .testimonials{
+    position:relative; z-index:2; background:var(--bg);
+    padding:0 24px 130px; text-align:center;
+  }
+  .testimonials .pill-label{margin-bottom:44px;}
+  .testi-grid{
+    max-width:1120px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+    text-align:left;
+  }
+  .testi-card{
+    background:rgba(255,255,255,0.035);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px; padding:30px 28px;
+  }
+  .testi-stars{display:flex; gap:3px; margin-bottom:18px; color:#F2B33D; font-size:14px; letter-spacing:2px;}
+  .testi-quote{font-size:15.5px; line-height:1.65; color:rgba(255,255,255,0.82); margin:0 0 22px;}
+  .testi-author{display:flex; align-items:center; gap:10px;}
+  .testi-avatar{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue',sans-serif; font-size:14px; color:#fff;
+  }
+  .testi-author .who{font-size:12.5px; color:rgba(255,255,255,0.5); line-height:1.4;}
+  .testi-author .who b{display:block; color:rgba(255,255,255,0.88); font-weight:600; font-size:13.5px;}
+  @media (max-width:860px){ .testi-grid{grid-template-columns:1fr; max-width:440px;} }
+
+  /* ---------- Shop ---------- */
+  .menu{
+    position:relative; z-index:2; background:var(--bg-shop);
+    padding:120px clamp(24px,6vw,60px);
+  }
+  .menu-header{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:40px; flex-wrap:wrap; margin-bottom:56px;
+  }
+  .menu-header h2{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:clamp(44px,6vw,80px); margin:0; letter-spacing:1px;
+  }
+  .menu-header p{
+    color:rgba(255,255,255,0.5); font-size:15px; max-width:320px;
+    text-align:right; margin:0;
+  }
+  .shop-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:18px;
+  }
+  @media (max-width:980px){ .shop-grid{grid-template-columns:repeat(2,1fr);} .menu-header p{text-align:left;} }
+  @media (max-width:560px){ .shop-grid{grid-template-columns:1fr;} }
+
+  .card{
+    position:relative; border-radius:22px; min-height:390px;
+    overflow:hidden; padding:26px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:transform .5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .card:hover{transform:translateY(-12px);}
+  .card:hover .card-bowl{transform:scale(1.08);}
+  .card-blueberry{ background:radial-gradient(ellipse at 50% 110%, #7078A6 0%, #1c1840 100%); }
+  .card-strawberry{ background:radial-gradient(ellipse at 50% 110%, #C94040 0%, #420c0c 100%); }
+  .card-chocolate{ background:radial-gradient(ellipse at 50% 110%, #B07C40 0%, #2e1907 100%); }
+  .card-blackberry{ background:radial-gradient(ellipse at 50% 110%, #8A3878 0%, #250730 100%); }
+
+  .card-top,.card-bottom{position:relative; z-index:1; pointer-events:none;}
+  .order-btn{pointer-events:auto;}
+  .card-top .label{font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5);}
+  .card-top .name{font-size:20px; font-weight:600; margin:5px 0;}
+  .card-top .flavor{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.32);
+  }
+  .diet-badges{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;}
+  .diet-badges span{
+    font-size:9.5px; letter-spacing:0.3px; padding:4px 9px; border-radius:999px;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+    color:rgba(255,255,255,0.62);
+  }
+  .card-bowl-wrap{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    pointer-events:none; z-index:0;
+  }
+  .card-bowl-wrap .quickview-trigger{ pointer-events:none; }
+  .card:hover .card-bowl-wrap .quickview-trigger{ pointer-events:auto; }
+  .card-bowl{
+    width:88%;
+    display:block;
+    filter:drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+    transition:transform .5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity .6s ease;
+    opacity:0;
+  }
+  .card-bowl.loaded{opacity:1;}
+  .nutrition-facts{
+    position:absolute; left:26px; right:26px; bottom:72px;
+    display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+    z-index:1; pointer-events:none;
+    opacity:0; transform:translateY(8px);
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .nutrition-facts span{
+    padding:5px 11px; border-radius:999px;
+    background:rgba(0,0,0,0.32);
+    border:1px solid rgba(255,255,255,0.12);
+    font-size:10.5px; letter-spacing:0.3px; color:rgba(255,255,255,0.75);
+    white-space:nowrap;
+  }
+  .card:hover .nutrition-facts{opacity:1; transform:translateY(0);}
+
+  .card-bottom{display:flex; justify-content:space-between; align-items:center;}
+  .card-bottom .price{font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:26px;}
+  .order-btn{
+    padding:10px 20px; border-radius:999px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.16);
+    font-size:12.5px; font-weight:500; color:#fff; cursor:pointer;
+    transition:background .25s ease, color .25s ease;
+  }
+  .order-btn:hover{background:#fff; color:#100c24;}
+
+  .quickview-trigger{
+    position:absolute; top:16px; right:16px; z-index:2;
+    width:34px; height:34px; border-radius:50%;
+    background:rgba(0,0,0,0.35);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.2);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transform:translateY(-6px);
+    transition:opacity .3s ease, transform .3s ease;
+    cursor:pointer; pointer-events:none;
+    padding:0;
+  }
+  .card:hover .quickview-trigger, .quickview-trigger:focus-visible{
+    opacity:1; transform:translateY(0); pointer-events:auto;
+  }
+
+  /* ---------- Quick view modal ---------- */
+  .quickview-backdrop{
+    position:fixed; inset:0; z-index:260;
+    background:rgba(0,0,0,0.6);
+    opacity:0; pointer-events:none;
+    transition:opacity .35s ease;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .quickview-backdrop.open{opacity:1; pointer-events:auto;}
+
+  .quickview-modal{
+    width:min(760px, 100%);
+    max-height:88vh; overflow-y:auto;
+    background:#100c24;
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,0.1);
+    display:grid; grid-template-columns:1fr 1fr;
+    transform:scale(0.94) translateY(16px);
+    opacity:0;
+    transition:transform .4s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s ease;
+    position:relative;
+    box-shadow:0 40px 90px rgba(0,0,0,0.5);
+  }
+  .quickview-backdrop.open .quickview-modal{transform:scale(1) translateY(0); opacity:1;}
+
+  .quickview-close{
+    position:absolute; top:20px; right:20px; z-index:2;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .quickview-visual{
+    display:flex; align-items:center; justify-content:center;
+    padding:44px; position:relative;
+  }
+  .quickview-visual img{width:88%; display:block; filter:drop-shadow(0 25px 40px rgba(0,0,0,0.4));}
+  .quickview-info{padding:44px 44px 44px 0;}
+  .quickview-info .qv-label{font-size:10.5px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.45);}
+  .quickview-info h3{font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:38px; margin:8px 0 4px; letter-spacing:1px;}
+  .quickview-info .qv-flavor{font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:18px; display:block;}
+  .quickview-info .qv-desc{font-size:14.5px; line-height:1.7; color:rgba(255,255,255,0.68); margin:0 0 22px;}
+  .quickview-info .qv-section-label{font-size:11px; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:10px;}
+  .qv-ingredients{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;}
+  .qv-ingredients span{font-size:12px; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.7);}
+  .qv-nutrition{display:flex; gap:24px; margin-bottom:28px;}
+  .qv-nutrition div{text-align:left;}
+  .qv-nutrition b{display:block; font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:22px;}
+  .qv-nutrition span{font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:rgba(255,255,255,0.45);}
+  .qv-footer{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .qv-price{font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:28px;}
+  .qv-add-btn{
+    padding:14px 30px; border-radius:999px; background:#fff; color:#100c24;
+    font-size:13.5px; font-weight:600; border:none; cursor:pointer;
+    transition:transform .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .qv-add-btn:hover{transform:translateY(-2px);}
+
+  @media (max-width:640px){
+    .quickview-modal{grid-template-columns:1fr; max-height:92vh;}
+    .quickview-visual{padding:36px 36px 0;}
+    .quickview-info{padding:24px 32px 32px;}
+  }
+
+  /* ---------- Sticky mobile order bar ---------- */
+  .sticky-order-bar{
+    display:none;
+    position:fixed; left:0; right:0; bottom:0; z-index:180;
+    padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+    background:rgba(16,12,36,0.92);
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    border-top:1px solid rgba(255,255,255,0.1);
+    align-items:center; justify-content:space-between; gap:14px;
+    transform:translateY(100%);
+    transition:transform .4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sticky-order-bar.show{transform:translateY(0);}
+  .sticky-order-bar .sob-info{display:flex; align-items:center; gap:12px; min-width:0;}
+  .sticky-order-bar img{width:38px; height:38px; border-radius:10px; object-fit:cover; flex-shrink:0;}
+  .sticky-order-bar .sob-text{min-width:0;}
+  .sticky-order-bar .sob-name{font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .sticky-order-bar .sob-price{font-size:12px; color:rgba(255,255,255,0.55);}
+  .sticky-order-bar button{
+    flex-shrink:0; padding:11px 20px; border-radius:999px;
+    background:#fff; color:#100c24; font-size:12.5px; font-weight:600;
+    border:none; cursor:pointer;
+  }
+  @media (max-width:640px){
+    .sticky-order-bar{display:flex;}
+  }
+
+  /* ---------- Contact ---------- */
+  .contact-section{
+    position:relative; z-index:2; background:var(--bg-shop);
+    padding:120px clamp(24px,6vw,60px);
+    border-top:1px solid rgba(255,255,255,0.05);
+  }
+  .contact-grid{
+    max-width:1100px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr; gap:70px;
+    align-items:start;
+  }
+  .contact-info h2{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:clamp(40px,5.5vw,66px); margin:0 0 20px; letter-spacing:1px;
+  }
+  .contact-info p{
+    color:rgba(255,255,255,0.55); font-size:15.5px; line-height:1.7;
+    max-width:380px; margin:0 0 34px;
+  }
+  .contact-methods{display:flex; flex-direction:column; gap:16px;}
+  .contact-methods a{
+    display:flex; align-items:center; gap:12px; font-size:14.5px;
+    color:rgba(255,255,255,0.72); transition:color .25s ease;
+  }
+  .contact-methods a:hover{color:#fff;}
+  .contact-methods .ic{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .contact-form{display:flex; flex-direction:column; gap:14px;}
+  .contact-form input,.contact-form textarea{
+    width:100%; padding:15px 18px; border-radius:14px;
+    background:rgba(255,255,255,0.045);
+    border:1px solid rgba(255,255,255,0.12);
+    color:#fff; font-family:'Inter',sans-serif; font-size:14px;
+    transition:border-color .25s ease, background .25s ease;
+  }
+  .contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(255,255,255,0.32);}
+  .contact-form input:focus,.contact-form textarea:focus{
+    outline:none; border-color:rgba(255,255,255,0.4); background:rgba(255,255,255,0.075);
+  }
+  .contact-form textarea{resize:vertical; min-height:112px; font-family:'Inter',sans-serif;}
+  .contact-submit{
+    align-self:flex-start; margin-top:4px;
+    padding:15px 32px; border-radius:999px;
+    background:#fff; color:#100c24;
+    font-size:13.5px; font-weight:600; letter-spacing:0.3px;
+    border:none; cursor:pointer;
+    transition:transform .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .contact-submit:hover{transform:translateY(-3px);}
+  @media (max-width:820px){ .contact-grid{grid-template-columns:1fr; gap:44px;} }
+
+  /* ---------- Footer ---------- */
+  footer{
+    position:relative; z-index:2; background:var(--bg-footer);
+    padding:0 clamp(24px,6vw,60px) 56px;
+    border-top:1px solid rgba(255,255,255,0.06);
+  }
+  .newsletter-row{
+    max-width:1100px; margin:0 auto; padding:48px 0 36px;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:20px;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .newsletter-row h3{
+    font-family:'Bebas Neue',sans-serif; font-weight:400;
+    font-size:clamp(22px,3vw,30px); margin:0; letter-spacing:0.5px;
+  }
+  .newsletter-note{
+    margin:8px 0 0; font-size:12px; color:rgba(255,255,255,0.4); max-width:340px;
+  }
+  .newsletter-note a{color:rgba(255,255,255,0.6); text-decoration:underline;}
+  .newsletter-note a:hover{color:#fff;}
+  .newsletter-form{display:flex; gap:10px; flex-wrap:wrap;}
+  .newsletter-form input{
+    padding:13px 20px; border-radius:999px; min-width:230px;
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.14);
+    color:#fff; font-size:13.5px; font-family:'Inter',sans-serif;
+  }
+  .newsletter-form input::placeholder{color:rgba(255,255,255,0.38);}
+  .newsletter-form input:focus{outline:none; border-color:rgba(255,255,255,0.42);}
+  .newsletter-form button{
+    padding:13px 28px; border-radius:999px; background:#fff; color:#080613;
+    font-size:12.5px; font-weight:600; letter-spacing:0.3px; border:none; cursor:pointer;
+    transition:transform .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .newsletter-form button:hover{transform:translateY(-2px);}
+  @media (max-width:640px){ .newsletter-row{flex-direction:column; align-items:flex-start;} }
+
+  .footer-row{
+    max-width:1100px; margin:0 auto; padding-top:36px;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:24px;
+  }
+  .footer-brand .flogo{font-weight:600; letter-spacing:2.5px; font-size:15px; text-transform:uppercase;}
+  .footer-brand .tag{color:rgba(255,255,255,0.42); font-size:13px; margin-top:8px;}
+  .footer-links{display:flex; gap:32px; flex-wrap:wrap;}
+  .footer-links a{font-size:14px; color:rgba(255,255,255,0.58); transition:color .25s ease;}
+  .footer-links a:hover{color:#fff;}
+  .footer-legal{display:flex; gap:20px; flex-wrap:wrap;}
+  .footer-legal a{font-size:12.5px; color:rgba(255,255,255,0.4); transition:color .25s ease;}
+  .footer-legal a:hover{color:#fff;}
+  .footer-copy{color:rgba(255,255,255,0.38); font-size:13px;}
+
+  @media (max-width:720px){
+    .footer-row{flex-direction:column; align-items:flex-start; text-align:left;}
+    .content-wrap{left:28px; bottom:120px; max-width:80vw;}
+    .slide-nav{right:28px; bottom:28px;}
+    .scroll-hint{display:none;}
+    nav.site-nav{padding:20px 20px;}
+    .pill-nav a{padding:9px 14px; font-size:12px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<h1 class="sr-only">Freshify — Real Fruit Smoothie Bowls</h1>
+
+<div id="bg-a"></div>
+<div id="bg-b"></div>
+
+<nav class="site-nav">
+  <div class="logo">Freshify</div>
+  <div class="pill-nav">
+    <a href="#home" class="pill active" data-target="home">Home</a>
+    <a href="#about" class="pill" data-target="about">About</a>
+    <a href="#shop" class="pill" data-target="shop">Shop</a>
+    <a href="#contact" class="pill" data-target="contact">Contact</a>
+  </div>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+      <span class="bars"><span></span><span></span><span></span></span>
+    </button>
+    <button class="user-btn cart-btn" id="cart-btn" aria-label="Open cart" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.6a2 2 0 0 0 2-1.6L22 8H6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="21" r="1.4" fill="#fff"/><circle cx="18" cy="21" r="1.4" fill="#fff"/></svg>
+      <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#home" class="pill active" data-target="home">Home</a>
+  <a href="#about" class="pill" data-target="about">About</a>
+  <a href="#shop" class="pill" data-target="shop">Shop</a>
+  <a href="#contact" class="pill" data-target="contact">Contact</a>
+</div>
+
+<section class="hero" id="home">
+  <div class="slider">
+    
+        <div class="slide active" data-index="0" data-flavor="blueberry">
+          <div class="ingredient anim ing-1"><img src="Images/Blueberry-1.webp" alt="Blueberry ingredient"></div>
+          <div class="ingredient anim ing-2"><img src="Images/Blueberry-2.webp" alt="Blueberry ingredient"></div>
+          <div class="ingredient anim ing-3"><img src="Images/Blueberry-3.webp" alt="Blueberry ingredient"></div>
+
+          <div class="bowl-wrap">
+            <img class="bowl-anim anim" src="Images/Blueberry-bowl.webp" alt="Blueberry smoothie bowl" fetchpriority="high">
+          </div>
+
+          <div class="title-wrap">
+            <h2 class="title-anim anim">Blueberry</h2>
+          </div>
+
+          <div class="content-wrap">
+            <div class="content-anim anim">
+              <h3 class="slide-name">Berry Pure</h3>
+              <p class="slide-desc">Fresh blueberries blended with almond milk, topped with chia seeds and toasted coconut flakes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide" data-index="1" data-flavor="strawberry">
+          <div class="ingredient anim ing-1"><img data-src="Images/Strawberry-1.webp" alt="Strawberry ingredient"></div>
+          <div class="ingredient anim ing-2"><img data-src="Images/Strawberry-2.webp" alt="Strawberry ingredient"></div>
+          <div class="ingredient anim ing-3"><img data-src="Images/Strawberry-3.webp" alt="Strawberry ingredient"></div>
+
+          <div class="bowl-wrap">
+            <img class="bowl-anim anim" data-src="Images/Strawberry-bowl.webp" alt="Strawberry smoothie bowl">
+          </div>
+
+          <div class="title-wrap">
+            <h2 class="title-anim anim">Strawberry</h2>
+          </div>
+
+          <div class="content-wrap">
+            <div class="content-anim anim">
+              <h3 class="slide-name">Pink Bliss</h3>
+              <p class="slide-desc">Sun-ripened strawberries with banana, shredded coconut and a drizzle of raw honey.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide" data-index="2" data-flavor="chocolate">
+          <div class="ingredient anim ing-1"><img data-src="Images/Chocolate-1.webp" alt="Chocolate ingredient"></div>
+          <div class="ingredient anim ing-2"><img data-src="Images/Chocolate-2.webp" alt="Chocolate ingredient"></div>
+          <div class="ingredient anim ing-3"><img data-src="Images/Chocolate-3.webp" alt="Chocolate ingredient"></div>
+
+          <div class="bowl-wrap">
+            <img class="bowl-anim anim" data-src="Images/Chocolate-bowl.webp" alt="Chocolate smoothie bowl">
+          </div>
+
+          <div class="title-wrap">
+            <h2 class="title-anim anim">Chocolate</h2>
+          </div>
+
+          <div class="content-wrap">
+            <div class="content-anim anim">
+              <h3 class="slide-name">Cocoa Crush</h3>
+              <p class="slide-desc">Rich cacao smoothie base topped with sliced banana, roasted almonds and coconut flakes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide" data-index="3" data-flavor="blackberry">
+          <div class="ingredient anim ing-1"><img data-src="Images/Blackberry-1.webp" alt="Blackberry ingredient"></div>
+          <div class="ingredient anim ing-2"><img data-src="Images/Blackberry-2.webp" alt="Blackberry ingredient"></div>
+          <div class="ingredient anim ing-3"><img data-src="Images/Blackberry-3.webp" alt="Blackberry ingredient"></div>
+
+          <div class="bowl-wrap">
+            <img class="bowl-anim anim" data-src="Images/Blackberry-bowl.webp" alt="Blackberry smoothie bowl">
+          </div>
+
+          <div class="title-wrap">
+            <h2 class="title-anim anim">Blackberry</h2>
+          </div>
+
+          <div class="content-wrap">
+            <div class="content-anim anim">
+              <h3 class="slide-name">Dark Berry</h3>
+              <p class="slide-desc">Wild blackberries with coconut cream, pine nuts, chia seeds and toasted almond slivers.</p>
+            </div>
+          </div>
+        </div>
+
+  </div>
+
+  <div class="slide-nav">
+    <span class="slide-counter"><span id="counter-current">01</span> / 04</span>
+    <div class="arrow-btns">
+      <button class="arrow-btn" id="prev-btn" aria-label="Previous flavour">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="arrow-btn" id="next-btn" aria-label="Next flavour">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <a class="scroll-hint" href="#about">
+    <span>Discover</span>
+    <span class="chevron"></span>
+  </a>
+</section>
+
+<section class="about" id="about">
+  <div class="pill-label reveal"><span class="dot"></span> Crafted With Care</div>
+  <h2 class="reveal reveal-d1">REAL FRUIT.<br>REAL FLAVOUR.</h2>
+  <p class="sub reveal reveal-d2">Every bowl is built from scratch with premium whole ingredients. No fillers, no shortcuts — just pure smoothie goodness in every spoonful.</p>
+  <div class="stats reveal reveal-d3">
+    <div class="stat">
+      <span class="num">100%</span>
+      <span class="stat-label">Natural</span>
+    </div>
+    <div class="stat">
+      <span class="num">4</span>
+      <span class="stat-label">Flavours</span>
+    </div>
+    <div class="stat">
+      <span class="num">0</span>
+      <span class="stat-label">Fillers</span>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="pill-label reveal"><span class="dot"></span> Loved By Regulars</div>
+  <div class="testi-grid">
+    <div class="testi-card reveal reveal-d1">
+      <div class="testi-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></div>
+      <p class="testi-quote">The blackberry bowl replaced my afternoon coffee run. Genuinely didn't think a smoothie bowl could do that.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:radial-gradient(ellipse at 50% 110%, #8A3878 0%, #250730 100%);">M</div>
+        <div class="who"><b>Maya R.</b>Regular since 2025</div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-d2">
+      <div class="testi-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></div>
+      <p class="testi-quote">Ordered all four flavours for a brunch with friends — gone in about ten minutes. Cocoa Crush was the first to go.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:radial-gradient(ellipse at 50% 110%, #B07C40 0%, #2e1907 100%);">T</div>
+        <div class="who"><b>Theo K.</b>Shop customer</div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-d3">
+      <div class="testi-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></div>
+      <p class="testi-quote">Finally a smoothie bowl that isn't 90% banana filler. You can actually taste the strawberries.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:radial-gradient(ellipse at 50% 110%, #C94040 0%, #420c0c 100%);">P</div>
+        <div class="who"><b>Priya S.</b>Verified order</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="shop">
+  <div class="menu-header">
+    <h2 class="reveal">The Bowls</h2>
+    <p class="reveal reveal-d1">Pick your flavour. Every bowl is handcrafted fresh to order.</p>
+  </div>
+  <div class="shop-grid">
+    
+        <div class="card card-blueberry reveal reveal-d1">
+          <div class="card-bowl-wrap">
+            <img class="card-bowl" src="Images/Blueberry-bowl-sm.webp" alt="Blueberry bowl" loading="lazy">
+            <button type="button" class="quickview-trigger" aria-label="Quick view Berry Pure"
+              data-flavor="Berry Pure" data-flavor-label="Blueberry" data-price="14"
+              data-image="Images/Blueberry-bowl.webp"
+              data-desc="Fresh blueberries blended with almond milk, topped with chia seeds and toasted coconut flakes."
+              data-ingredients="Blueberries,Almond Milk,Chia Seeds,Toasted Coconut,Banana"
+              data-cal="310" data-protein="8" data-sugar="24">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="1.6"/></svg>
+            </button>
+          </div>
+          <div class="card-top">
+            <span class="label">Smoothie Bowl</span>
+            <div class="name">Berry Pure</div>
+            <span class="flavor">Blueberry</span>
+            <div class="diet-badges"><span>Vegan</span><span>Contains Nuts</span></div>
+          </div>
+          <div class="nutrition-facts"><span>310 cal</span><span>8g protein</span><span>24g sugar</span></div>
+          <div class="card-bottom">
+            <span class="price">$14</span>
+            <button class="order-btn" data-flavor="Berry Pure" data-price="14" data-image="Images/Blueberry-bowl-sm.webp">Order Now</button>
+          </div>
+        </div>
+
+        <div class="card card-strawberry reveal reveal-d2">
+          <div class="card-bowl-wrap">
+            <img class="card-bowl" src="Images/Strawberry-bowl-sm.webp" alt="Strawberry bowl" loading="lazy">
+            <button type="button" class="quickview-trigger" aria-label="Quick view Pink Bliss"
+              data-flavor="Pink Bliss" data-flavor-label="Strawberry" data-price="15"
+              data-image="Images/Strawberry-bowl.webp"
+              data-desc="Sun-ripened strawberries with banana, shredded coconut and a drizzle of raw honey."
+              data-ingredients="Strawberries,Banana,Shredded Coconut,Raw Honey,Oat Milk"
+              data-cal="295" data-protein="6" data-sugar="27">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="1.6"/></svg>
+            </button>
+          </div>
+          <div class="card-top">
+            <span class="label">Smoothie Bowl</span>
+            <div class="name">Pink Bliss</div>
+            <span class="flavor">Strawberry</span>
+            <div class="diet-badges"><span>Contains Honey</span><span>Gluten-Free</span></div>
+          </div>
+          <div class="nutrition-facts"><span>295 cal</span><span>6g protein</span><span>27g sugar</span></div>
+          <div class="card-bottom">
+            <span class="price">$15</span>
+            <button class="order-btn" data-flavor="Pink Bliss" data-price="15" data-image="Images/Strawberry-bowl-sm.webp">Order Now</button>
+          </div>
+        </div>
+
+        <div class="card card-chocolate reveal reveal-d3">
+          <div class="card-bowl-wrap">
+            <img class="card-bowl" src="Images/Chocolate-bowl-sm.webp" alt="Chocolate bowl" loading="lazy">
+            <button type="button" class="quickview-trigger" aria-label="Quick view Cocoa Crush"
+              data-flavor="Cocoa Crush" data-flavor-label="Chocolate" data-price="13"
+              data-image="Images/Chocolate-bowl.webp"
+              data-desc="Rich cacao smoothie base topped with sliced banana, roasted almonds and coconut flakes."
+              data-ingredients="Cacao,Banana,Roasted Almonds,Coconut Flakes,Oat Milk"
+              data-cal="340" data-protein="10" data-sugar="21">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="1.6"/></svg>
+            </button>
+          </div>
+          <div class="card-top">
+            <span class="label">Smoothie Bowl</span>
+            <div class="name">Cocoa Crush</div>
+            <span class="flavor">Chocolate</span>
+            <div class="diet-badges"><span>Contains Nuts</span><span>Dairy-Free</span></div>
+          </div>
+          <div class="nutrition-facts"><span>340 cal</span><span>10g protein</span><span>21g sugar</span></div>
+          <div class="card-bottom">
+            <span class="price">$13</span>
+            <button class="order-btn" data-flavor="Cocoa Crush" data-price="13" data-image="Images/Chocolate-bowl-sm.webp">Order Now</button>
+          </div>
+        </div>
+
+        <div class="card card-blackberry reveal reveal-d4">
+          <div class="card-bowl-wrap">
+            <img class="card-bowl" src="Images/Blackberry-bowl-sm.webp" alt="Blackberry bowl" loading="lazy">
+            <button type="button" class="quickview-trigger" aria-label="Quick view Dark Berry"
+              data-flavor="Dark Berry" data-flavor-label="Blackberry" data-price="16"
+              data-image="Images/Blackberry-bowl.webp"
+              data-desc="Wild blackberries with coconut cream, pine nuts, chia seeds and toasted almond slivers."
+              data-ingredients="Blackberries,Coconut Cream,Pine Nuts,Chia Seeds,Toasted Almonds"
+              data-cal="325" data-protein="9" data-sugar="19">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="1.6"/></svg>
+            </button>
+          </div>
+          <div class="card-top">
+            <span class="label">Smoothie Bowl</span>
+            <div class="name">Dark Berry</div>
+            <span class="flavor">Blackberry</span>
+            <div class="diet-badges"><span>Vegan</span><span>Contains Nuts</span></div>
+          </div>
+          <div class="nutrition-facts"><span>325 cal</span><span>9g protein</span><span>19g sugar</span></div>
+          <div class="card-bottom">
+            <span class="price">$16</span>
+            <button class="order-btn" data-flavor="Dark Berry" data-price="16" data-image="Images/Blackberry-bowl-sm.webp">Order Now</button>
+          </div>
+        </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h2>Say hello.</h2>
+      <p>Questions about an order, a flavour request, or just want to talk smoothie bowls? We read everything that comes in.</p>
+      <div class="contact-methods">
+        <a href="mailto:hello@freshify.example">
+          <span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18v12H3z" stroke="#fff" stroke-width="1.6"/><path d="M3 7l9 6 9-6" stroke="#fff" stroke-width="1.6"/></svg></span>
+          hello@freshify.example
+        </a>
+        <a href="tel:+11234567890">
+          <span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 5c0 8.3 6.7 15 15 15l3-4-6-3-2 2c-2.5-1.2-4.8-3.5-6-6l2-2-3-6z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          (123) 456-7890
+        </a>
+        <a href="#" target="_blank" rel="noopener">
+          <span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span>
+          @freshify on Instagram
+        </a>
+      </div>
+    </div>
+    <form class="contact-form reveal reveal-d1" id="contact-form">
+      <label for="contact-name" class="sr-only">Your name</label>
+      <input type="text" id="contact-name" name="name" placeholder="Your name" required>
+      <label for="contact-email" class="sr-only">Your email</label>
+      <input type="email" id="contact-email" name="email" placeholder="Your email" required>
+      <label for="contact-message" class="sr-only">Your message</label>
+      <textarea id="contact-message" name="message" placeholder="What's on your mind?" required></textarea>
+      <button type="submit" class="contact-submit">Send message</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="newsletter-row">
+    <div>
+      <h3>Get 10% off your first order.</h3>
+      <p class="newsletter-note">We'll never spam you — unsubscribe anytime. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    </div>
+    <form class="newsletter-form" id="newsletter-form">
+      <label for="newsletter-email" class="sr-only">Email address</label>
+      <input type="email" id="newsletter-email" placeholder="you@email.com" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+  <div class="footer-row">
+    <div class="footer-brand">
+      <div class="flogo">Freshify</div>
+      <div class="tag">Made with love and real blueberries.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#shop">Shop</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-legal">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="shipping.html">Shipping</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 Freshify. All rights reserved.</div>
+  </div>
+</footer>
+
+<div class="cart-backdrop" id="cart-backdrop"></div>
+<div class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Shopping cart" aria-hidden="true">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close-btn" id="cart-close-btn" aria-label="Close cart">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.6a2 2 0 0 0 2-1.6L22 8H6" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="21" r="1.4" fill="#fff"/><circle cx="18" cy="21" r="1.4" fill="#fff"/></svg>
+      <p>Your cart is empty.</p>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal"><span>Subtotal</span><b id="cart-subtotal-amount">$0</b></div>
+    <button class="cart-checkout-btn" id="cart-checkout-btn" disabled>Checkout</button>
+  </div>
+</div>
+
+<div class="quickview-backdrop" id="quickview-backdrop">
+  <div class="quickview-modal" role="dialog" aria-label="Quick view" aria-hidden="true">
+    <button class="quickview-close" id="quickview-close" aria-label="Close quick view">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="quickview-visual">
+      <img id="qv-image" src="" alt="">
+    </div>
+    <div class="quickview-info">
+      <span class="qv-label">Smoothie Bowl</span>
+      <h3 id="qv-name">Berry Pure</h3>
+      <span class="qv-flavor" id="qv-flavor-label">Blueberry</span>
+      <p class="qv-desc" id="qv-desc"></p>
+      <div class="qv-section-label">Ingredients</div>
+      <div class="qv-ingredients" id="qv-ingredients"></div>
+      <div class="qv-nutrition">
+        <div><b id="qv-cal">0</b><span>Calories</span></div>
+        <div><b id="qv-protein">0g</b><span>Protein</span></div>
+        <div><b id="qv-sugar">0g</b><span>Sugar</span></div>
+      </div>
+      <div class="qv-footer">
+        <span class="qv-price" id="qv-price">$0</span>
+        <button class="qv-add-btn" id="qv-add-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sticky-order-bar" id="sticky-order-bar">
+  <div class="sob-info">
+    <img id="sob-image" src="Images/Blueberry-bowl-sm.webp" alt="">
+    <div class="sob-text">
+      <div class="sob-name" id="sob-name">Berry Pure</div>
+      <div class="sob-price" id="sob-price">$14</div>
+    </div>
+  </div>
+  <button id="sob-order-btn">Order Now</button>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+(function(){
+  // ================================================================
+  // FORM ENDPOINTS — connect these to go live.
+  // 1. Sign up free at https://formspree.io (or use Netlify Forms,
+  //    Basin, or any endpoint that accepts a POST + returns JSON).
+  // 2. Create a form there, copy its endpoint URL, and paste it
+  //    below in place of the placeholder strings.
+  // Until you do, submissions show a "demo mode" toast instead of
+  // actually sending anywhere — nothing is silently lost or faked.
+  // ================================================================
+  var CONTACT_FORM_ENDPOINT = 'https://formspree.io/f/YOUR_CONTACT_FORM_ID';
+  var NEWSLETTER_FORM_ENDPOINT = 'https://formspree.io/f/YOUR_NEWSLETTER_FORM_ID';
+
+  // ================================================================
+  // CHECKOUT — connect a payment provider to go live.
+  // Easiest no-backend option: Stripe Payment Links (one per bowl).
+  // Create them at https://dashboard.stripe.com/payment-links and
+  // paste each URL below. A cart with a single bowl type (any
+  // quantity) will redirect to that link. Carts mixing different
+  // bowls need real Stripe Checkout Sessions, which requires a
+  // small server/serverless function — Payment Links alone can't
+  // combine different products into one order.
+  // ================================================================
+  var STRIPE_PAYMENT_LINKS = {
+    'Berry Pure':   '', // e.g. 'https://buy.stripe.com/xxxxxxxx'
+    'Pink Bliss':   '',
+    'Cocoa Crush':  '',
+    'Dark Berry':   ''
+  };
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var current = 0;
+  var animating = false;
+  var counterEl = document.getElementById('counter-current');
+
+  var backgrounds = [
+    'radial-gradient(ellipse at 50% 50%, #7078A6 0%, #2E2951 100%)',
+    'radial-gradient(ellipse at 50% 50%, #C94040 0%, #6B1515 100%)',
+    'radial-gradient(ellipse at 50% 50%, #B07C40 0%, #4A2A10 100%)',
+    'radial-gradient(ellipse at 50% 50%, #8A3878 0%, #3A0F50 100%)'
+  ];
+  var bgA = document.getElementById('bg-a');
+  var bgB = document.getElementById('bg-b');
+  var activeBg = 'a';
+
+  function setBackground(index){
+    var grad = backgrounds[index];
+    if (activeBg === 'a'){
+      bgB.style.background = grad; bgB.style.opacity = '1';
+      bgA.style.opacity = '0'; activeBg = 'b';
+    } else {
+      bgA.style.background = grad; bgA.style.opacity = '1';
+      bgB.style.opacity = '0'; activeBg = 'a';
+    }
+  }
+  // paint initial background onto bg-a
+  bgA.style.background = backgrounds[0];
+
+  function updateCounter(index){
+    counterEl.textContent = String(index + 1).padStart(2, '0');
+  }
+
+  function goTo(next, direction){
+    if (animating || next === current) return;
+    animating = true;
+
+    var currSlide = slides[current];
+    var nextSlide = slides[next];
+    var enterClass = direction === 'next' ? 'enter-right' : 'enter-left';
+    var exitClass  = direction === 'next' ? 'exit-left'  : 'exit-right';
+
+    hydrateSlide(nextSlide);
+
+    var anims = nextSlide.querySelectorAll('.anim');
+    anims.forEach(function(el){ el.style.transition = 'none'; });
+    nextSlide.classList.remove('active', 'exit-left', 'exit-right');
+    nextSlide.classList.add(enterClass);
+
+    void nextSlide.offsetHeight;
+
+    requestAnimationFrame(function(){
+      anims.forEach(function(el){ el.style.transition = ''; });
+      currSlide.classList.remove('active');
+      currSlide.classList.add(exitClass);
+      nextSlide.classList.remove(enterClass);
+      nextSlide.classList.add('active');
+      setBackground(next);
+      updateCounter(next);
+      current = next;
+      setTimeout(function(){
+        currSlide.classList.remove(exitClass);
+        animating = false;
+      }, 850);
+    });
+  }
+
+  // ---------- Lazy hydration for non-active hero slides ----------
+  function hydrateSlide(slideEl){
+    slideEl.querySelectorAll('img[data-src]').forEach(function(img){
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+    });
+  }
+  window.addEventListener('load', function(){
+    var idle = window.requestIdleCallback || function(cb){ setTimeout(cb, 250); };
+    idle(function(){
+      slides.forEach(function(slide, i){
+        setTimeout(function(){ hydrateSlide(slide); }, i * 200);
+      });
+    });
+  });
+
+  // ---------- Hero auto-advance ----------
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var autoAdvanceTimer = null;
+  function startAutoAdvance(){
+    stopAutoAdvance();
+    if (prefersReducedMotion) return;
+    autoAdvanceTimer = setInterval(function(){
+      if (document.visibilityState !== 'visible') return;
+      goTo((current + 1) % slides.length, 'next');
+    }, 6000);
+  }
+  function stopAutoAdvance(){
+    if (autoAdvanceTimer){ clearInterval(autoAdvanceTimer); autoAdvanceTimer = null; }
+  }
+  var heroEl = document.querySelector('.hero');
+  heroEl.addEventListener('mouseenter', stopAutoAdvance);
+  heroEl.addEventListener('mouseleave', startAutoAdvance);
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible') startAutoAdvance();
+  });
+
+  document.getElementById('next-btn').addEventListener('click', function(){
+    goTo((current + 1) % slides.length, 'next');
+    startAutoAdvance();
+  });
+  document.getElementById('prev-btn').addEventListener('click', function(){
+    goTo((current - 1 + slides.length) % slides.length, 'prev');
+    startAutoAdvance();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight'){
+      goTo((current + 1) % slides.length, 'next');
+      startAutoAdvance();
+    } else if (e.key === 'ArrowLeft'){
+      goTo((current - 1 + slides.length) % slides.length, 'prev');
+      startAutoAdvance();
+    }
+  });
+
+  updateCounter(0);
+  startAutoAdvance();
+
+  // ---------- Scroll spy ----------
+  var pills = Array.prototype.slice.call(document.querySelectorAll('.pill-nav a, .mobile-menu a'));
+  var sections = ['home','about','shop','contact'].map(function(id){
+    return document.getElementById(id);
+  });
+
+  function onScroll(){
+    var scrollPos = window.scrollY + window.innerHeight * 0.4;
+    var activeIndex = 0;
+    sections.forEach(function(sec, i){
+      if (sec && sec.offsetTop <= scrollPos) activeIndex = i;
+    });
+    pills.forEach(function(p){ p.classList.remove('active'); });
+    var match = pills.filter(function(p){ return p.dataset.target === sections[activeIndex].id; })[0];
+    if (match) match.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ---------- Scroll reveal ----------
+  var revealEls = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(function(el){ observer.observe(el); });
+
+  // ---------- Hamburger / mobile menu ----------
+  var hamburgerBtn = document.getElementById('hamburger-btn');
+  var mobileMenu = document.getElementById('mobile-menu');
+
+  function closeMobileMenu(){
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    mobileMenu.classList.remove('open');
+  }
+  function toggleMobileMenu(){
+    var isOpen = mobileMenu.classList.toggle('open');
+    hamburgerBtn.classList.toggle('open', isOpen);
+    hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+  }
+  hamburgerBtn.addEventListener('click', toggleMobileMenu);
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMobileMenu);
+  });
+
+  // ---------- Toast notifications ----------
+  var toastContainer = document.getElementById('toast-container');
+  function showToast(message){
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = '<span class="toast-dot"></span><span></span>';
+    toast.querySelector('span:last-child').textContent = message;
+    toastContainer.appendChild(toast);
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ toast.classList.add('show'); });
+    });
+    setTimeout(function(){
+      toast.classList.remove('show');
+      setTimeout(function(){ toast.remove(); }, 400);
+    }, 2800);
+  }
+
+  // ---------- Cart ----------
+  var CART_STORAGE_KEY = 'freshify_cart_v1';
+  var cart = loadCart(); // { flavor, price, image, qty }
+  var cartBadge = document.getElementById('cart-badge');
+  var cartItemsEl = document.getElementById('cart-items');
+  var cartSubtotalEl = document.getElementById('cart-subtotal-amount');
+  var cartCheckoutBtn = document.getElementById('cart-checkout-btn');
+  var cartBackdrop = document.getElementById('cart-backdrop');
+  var cartDrawer = document.getElementById('cart-drawer');
+  var cartBtn = document.getElementById('cart-btn');
+  var cartCloseBtn = document.getElementById('cart-close-btn');
+
+  function loadCart(){
+    try {
+      var raw = window.localStorage.getItem(CART_STORAGE_KEY);
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(function(i){
+        return i && typeof i.flavor === 'string' && typeof i.price === 'number' && typeof i.qty === 'number';
+      });
+    } catch (e){
+      return [];
+    }
+  }
+  function saveCart(){
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch (e){
+      /* localStorage unavailable (private mode, etc) — cart just won't persist */
+    }
+  }
+
+  function addToCart(flavor, price, image){
+    var existing = cart.filter(function(i){ return i.flavor === flavor; })[0];
+    if (existing){
+      existing.qty += 1;
+    } else {
+      cart.push({ flavor: flavor, price: price, image: image, qty: 1 });
+    }
+    renderCart();
+    showToast(flavor + ' added to cart');
+  }
+
+  function renderCart(){
+    saveCart();
+    var totalQty = cart.reduce(function(sum, i){ return sum + i.qty; }, 0);
+    cartBadge.textContent = totalQty;
+    cartBadge.classList.toggle('show', totalQty > 0);
+
+    if (cart.length === 0){
+      cartItemsEl.innerHTML = '<div class="cart-empty">' +
+        '<svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.6a2 2 0 0 0 2-1.6L22 8H6" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="21" r="1.4" fill="#fff"/><circle cx="18" cy="21" r="1.4" fill="#fff"/></svg>' +
+        '<p>Your cart is empty.</p></div>';
+    } else {
+      cartItemsEl.innerHTML = cart.map(function(item, idx){
+        return '<div class="cart-item">' +
+          '<img src="' + item.image + '" alt="' + item.flavor + '">' +
+          '<div class="cart-item-info">' +
+            '<div class="cart-item-top">' +
+              '<span class="cart-item-name">' + item.flavor + '</span>' +
+              '<button type="button" class="cart-item-remove" data-idx="' + idx + '">Remove</button>' +
+            '</div>' +
+            '<span class="cart-item-price">$' + item.price + ' each</span>' +
+            '<div class="qty-stepper">' +
+              '<button type="button" class="qty-minus" data-idx="' + idx + '" aria-label="Decrease quantity">−</button>' +
+              '<span>' + item.qty + '</span>' +
+              '<button type="button" class="qty-plus" data-idx="' + idx + '" aria-label="Increase quantity">+</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    var subtotal = cart.reduce(function(sum, i){ return sum + i.price * i.qty; }, 0);
+    cartSubtotalEl.textContent = '$' + subtotal.toFixed(2).replace(/\.00$/, '');
+    cartCheckoutBtn.disabled = cart.length === 0;
+
+    cartItemsEl.querySelectorAll('.qty-plus').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        cart[+btn.dataset.idx].qty += 1;
+        renderCart();
+      });
+    });
+    cartItemsEl.querySelectorAll('.qty-minus').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx = +btn.dataset.idx;
+        cart[idx].qty -= 1;
+        if (cart[idx].qty <= 0) cart.splice(idx, 1);
+        renderCart();
+      });
+    });
+    cartItemsEl.querySelectorAll('.cart-item-remove').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        cart.splice(+btn.dataset.idx, 1);
+        renderCart();
+      });
+    });
+  }
+
+  function openCart(){
+    cartBackdrop.classList.add('open');
+    cartDrawer.classList.add('open');
+    cartDrawer.setAttribute('aria-hidden', 'false');
+    cartBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeCart(){
+    cartBackdrop.classList.remove('open');
+    cartDrawer.classList.remove('open');
+    cartDrawer.setAttribute('aria-hidden', 'true');
+    cartBtn.setAttribute('aria-expanded', 'false');
+  }
+  cartBtn.addEventListener('click', openCart);
+  cartCloseBtn.addEventListener('click', closeCart);
+  cartBackdrop.addEventListener('click', closeCart);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){
+      closeCart();
+      closeMobileMenu();
+      closeQuickView();
+    }
+  });
+  cartCheckoutBtn.addEventListener('click', function(){
+    if (cart.length === 0) return;
+
+    // If a Stripe Payment Link is configured for a single-flavor cart,
+    // send them straight to Stripe's hosted checkout for that product.
+    if (cart.length === 1){
+      var link = STRIPE_PAYMENT_LINKS[cart[0].flavor];
+      if (link){
+        window.open(link, '_blank', 'noopener');
+        return;
+      }
+    }
+
+    // Otherwise (no link configured, or multiple different bowls in the
+    // cart — which a single Payment Link can't combine), go to the
+    // full checkout page.
+    window.location.href = 'checkout.html';
+  });
+
+  document.querySelectorAll('.order-btn, #sob-order-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var flavor = btn.dataset.flavor || sobState.flavor;
+      var price = parseFloat(btn.dataset.price || sobState.price);
+      var image = btn.dataset.image || sobState.image;
+      addToCart(flavor, price, image);
+    });
+  });
+
+  renderCart();
+
+  // ---------- Image blur-up fade-in (shop card bowls) ----------
+  function markImageLoaded(img){
+    if (img.complete && img.naturalWidth > 0){
+      img.classList.add('loaded');
+    } else {
+      img.addEventListener('load', function(){ img.classList.add('loaded'); }, { once: true });
+    }
+  }
+  document.querySelectorAll('.card-bowl').forEach(markImageLoaded);
+
+  // ---------- Quick view modal ----------
+  var qvBackdrop = document.getElementById('quickview-backdrop');
+  var qvModal = qvBackdrop.querySelector('.quickview-modal');
+  var qvClose = document.getElementById('quickview-close');
+  var qvImage = document.getElementById('qv-image');
+  var qvName = document.getElementById('qv-name');
+  var qvFlavorLabel = document.getElementById('qv-flavor-label');
+  var qvDesc = document.getElementById('qv-desc');
+  var qvIngredients = document.getElementById('qv-ingredients');
+  var qvCal = document.getElementById('qv-cal');
+  var qvProtein = document.getElementById('qv-protein');
+  var qvSugar = document.getElementById('qv-sugar');
+  var qvPrice = document.getElementById('qv-price');
+  var qvAddBtn = document.getElementById('qv-add-btn');
+  var qvCurrent = null;
+
+  function openQuickView(trigger){
+    var d = trigger.dataset;
+    qvCurrent = { flavor: d.flavor, price: parseFloat(d.price), image: d.image };
+    qvImage.src = d.image;
+    qvImage.alt = d.flavor;
+    qvName.textContent = d.flavor;
+    qvFlavorLabel.textContent = d.flavorLabel;
+    qvDesc.textContent = d.desc;
+    qvIngredients.innerHTML = d.ingredients.split(',').map(function(ing){
+      return '<span>' + ing.trim() + '</span>';
+    }).join('');
+    qvCal.textContent = d.cal;
+    qvProtein.textContent = d.protein + 'g';
+    qvSugar.textContent = d.sugar + 'g';
+    qvPrice.textContent = '$' + d.price;
+
+    qvBackdrop.classList.add('open');
+    qvModal.setAttribute('aria-hidden', 'false');
+  }
+  function closeQuickView(){
+    qvBackdrop.classList.remove('open');
+    qvModal.setAttribute('aria-hidden', 'true');
+  }
+  document.querySelectorAll('.quickview-trigger').forEach(function(btn){
+    btn.addEventListener('click', function(){ openQuickView(btn); });
+  });
+  qvClose.addEventListener('click', closeQuickView);
+  qvBackdrop.addEventListener('click', function(e){
+    if (e.target === qvBackdrop) closeQuickView();
+  });
+  qvAddBtn.addEventListener('click', function(){
+    if (!qvCurrent) return;
+    addToCart(qvCurrent.flavor, qvCurrent.price, qvCurrent.image);
+    closeQuickView();
+  });
+
+  // ---------- Sticky mobile order bar ----------
+  var sobBar = document.getElementById('sticky-order-bar');
+  var sobImage = document.getElementById('sob-image');
+  var sobName = document.getElementById('sob-name');
+  var sobPrice = document.getElementById('sob-price');
+  var sobOrderBtn = document.getElementById('sob-order-btn');
+  var sobState = { flavor: 'Berry Pure', price: '14', image: 'Images/Blueberry-bowl-sm.webp' };
+
+  function updateSobContent(card){
+    var btn = card.querySelector('.order-btn');
+    sobState.flavor = btn.dataset.flavor;
+    sobState.price = btn.dataset.price;
+    sobState.image = btn.dataset.image;
+    sobName.textContent = sobState.flavor;
+    sobPrice.textContent = '$' + sobState.price;
+    sobImage.src = sobState.image;
+    sobImage.alt = sobState.flavor;
+    sobOrderBtn.dataset.flavor = sobState.flavor;
+    sobOrderBtn.dataset.price = sobState.price;
+    sobOrderBtn.dataset.image = sobState.image;
+  }
+
+  var shopSection = document.getElementById('shop');
+  var shopCards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+
+  var shopVisible = false;
+  var shopObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      shopVisible = entry.isIntersecting;
+      sobBar.classList.toggle('show', shopVisible);
+    });
+  }, { threshold: 0 });
+  shopObserver.observe(shopSection);
+
+  var cardRatios = new Map();
+  var cardObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      cardRatios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0);
+    });
+    var bestCard = null, bestRatio = 0;
+    cardRatios.forEach(function(ratio, card){
+      if (ratio > bestRatio){ bestRatio = ratio; bestCard = card; }
+    });
+    if (bestCard && bestRatio >= 0.4){
+      updateSobContent(bestCard);
+    }
+  }, { threshold: [0, 0.25, 0.4, 0.5, 0.75, 1] });
+  shopCards.forEach(function(card){ cardObserver.observe(card); });
+
+  // ---------- Generic form submission helper ----------
+  function submitForm(form, endpoint, placeholderMarker, successMessage, submitBtn){
+    if (!endpoint || endpoint.indexOf(placeholderMarker) !== -1){
+      console.warn('Freshify: this form is not connected to a live endpoint yet. ' +
+        'See the FORM ENDPOINTS comment near the top of the <script> tag.');
+      showToast(successMessage + ' (demo mode)');
+      form.reset();
+      return;
+    }
+    var originalText = submitBtn ? submitBtn.textContent : null;
+    if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+    fetch(endpoint, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function(res){
+      if (res.ok){
+        showToast(successMessage);
+        form.reset();
+      } else {
+        showToast("Something went wrong — please try again.");
+      }
+    }).catch(function(){
+      showToast("Something went wrong — please try again.");
+    }).finally(function(){
+      if (submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
+    });
+  }
+
+  // ---------- Newsletter form ----------
+  var newsletterForm = document.getElementById('newsletter-form');
+  newsletterForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = newsletterForm.querySelector('button[type="submit"]');
+    submitForm(newsletterForm, NEWSLETTER_FORM_ENDPOINT, 'YOUR_NEWSLETTER_FORM_ID', 'Thanks! Check your inbox for 10% off.', btn);
+  });
+
+  // ---------- Contact form ----------
+  var contactForm = document.getElementById('contact-form');
+  contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = contactForm.querySelector('button[type="submit"]');
+    submitForm(contactForm, CONTACT_FORM_ENDPOINT, 'YOUR_CONTACT_FORM_ID', "Message sent — we'll get back to you soon.", btn);
+  });
+})();
+</script>
+</body>
+</html>
